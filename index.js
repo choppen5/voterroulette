@@ -10,6 +10,8 @@ const dbUrl = process.env.DBURL || "ds145997.mlab.com:45997/talktoavoter"
 
 const mongoUrl = `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
 
+console.log(mongoUrl);
+
 var db;
 
 MongoClient.connect(mongoUrl, (err, database) => {
