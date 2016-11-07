@@ -6,9 +6,10 @@ var ObjectId = require('mongodb').ObjectID;
 
 const dbUser = process.env.DBUSER || "talktoavoter";
 const dbPass = process.env.DBPASS || "test";
-const dbUrl = process.env.DBURL || "ds145997.mlab.com:45997/talktoavoter"
+const dbUrl = process.env.DBURL || "ds145997.mlab.com:45997/talktoavoter";
+const mongoUrl = process.env.FULLDBURL || `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
 
-const mongoUrl = `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
+//const mongoUrl = `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
 
 console.log(mongoUrl);
 
