@@ -27,8 +27,9 @@ app.get('/ivr', function (req, res) {
   //res.set('Conent-Type', 'text/xml');
 
   var twiml = ` <Response>
+                <Say>Welcome to voter roulette! Your conversation will be recorded and transcribed and published on the internet.
+                If you don't want your conversation recorded, please  hang up now.</Say>
                 <Gather action="/choose">
-                <Say>Thanks you for calling Talk to a voter!</Say>
                 <Say>You are calling in to talk to a voter who is voting for somebody else.
                 The goal of this is to have a civilized conversation, share about why you are
                 voiting for who you are voting for. Your conversation will be recorded and transcripibed and put on the internet.
