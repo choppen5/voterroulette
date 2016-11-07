@@ -1,0 +1,21 @@
+{
+  "name": "Voter Roulette",
+  "description": "Call in and talk to someone voting for the other canidate",
+  "keywords": ["node", "express", "twilio"],
+  "image": "heroku/nodejs",
+  "repository": "https://github.com/choppen5/voterroulette",
+  "scripts": {
+  },
+  "env": {
+    "DBUSER": {
+      "description": "the database username"
+    },
+    "DBPASS": {
+      "description": "database password"
+    },
+     "DBURL": {
+      "description": "the database url"
+    }
+  }
+
+}
