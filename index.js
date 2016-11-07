@@ -16,9 +16,13 @@ console.log(mongoUrl);
 var db;
 
 MongoClient.connect(mongoUrl, (err, database) => {
-  if (err) return console.log(err);
-  db = database;
-});
+  if (err) return console.log(err)
+  db = database
+  var port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log('listening on ' + port);
+  })
+})
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -155,8 +159,3 @@ function insertVoter(phoneNumber, choice, state, callSid) {
 
 
 }
-
-
-app.listen(3000, () => {
-  console.log('listening on 3000')
-})
