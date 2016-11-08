@@ -9,12 +9,7 @@ const dbPass = process.env.DBPASS || "test";
 const dbUrl = process.env.DBURL || "ds145997.mlab.com:45997/talktoavoter";
 const mongoUrl = process.env.FULLDBURL || `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
 
-//const mongoUrl = `mongodb://${dbUser}:${dbPass}@${dbUrl}`;
-
-console.log(mongoUrl);
-
 var db;
-
 MongoClient.connect(mongoUrl, (err, database) => {
   if (err) return console.log(err)
   db = database
@@ -25,11 +20,7 @@ MongoClient.connect(mongoUrl, (err, database) => {
 })
 
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.get('/ivr', function (req, res) {
-
-  //res.set('Conent-Type', 'text/xml');
-
   var twiml = ` <Response>
                 <Say voice="alice">Welcome to voter roulette! You will be connected to a voter who supports another candidate. 
                 <Pause length="1"/>
@@ -46,92 +37,62 @@ app.get('/ivr', function (req, res) {
                 </Gather>
                 <Redirect method="GET">/ivr</Redirect>
                 </Response>`
-
- res.send(twiml);
+  res.send(twiml);
 })
-
 
 
 app.post('/recordingover', function (req, res) {
     collection = db.collection('voters');
     console.dir(req.body);
     collection.findOne( { $or: [{conference: req.body.CallSid}, {othercaller: req.body.CallSid }]}, function (err, result) {
-
         if (err) {
             console.log(err)
         } else {
-            if (result) {
-                //console.log("found " + req.body.FriendlyName);
-
+            if (result) { 
                 collection.update({_id: result._id}, {$set: {state: "complete", recordingUrl: req.body.RecordingUrl}});
             }
-
         }
     });
     res.sendStatus(200);
 });
 
 app.post('/cleanup', function (req, res) {
-    
+    //when a call ends, look for records and update them
     collection = db.collection('voters');
     console.dir(req.body);
     collection.findOne( { conference: req.body.CallSid }, function (err, result) {
-
         if (err) {
             console.log(err)
         } else {
             if (result) {
-                //console.log("found " + req.body.FriendlyName);
-
                 collection.update({_id: result._id}, {$set: {state: "complete"}});
             }
-
         }
     });
-
-    //todo: 
-    //send sms with recording
-    //ask them if they changed their mind? do they
-
-     var twiml = `<Response><Say voice="alice">Thank you for your call. Call back in if you want to talk to another voter.</Say></Response>`;
-
+    var twiml = `<Response><Say voice="alice">Thank you for your call. Call back in if you want to talk to another voter.</Say></Response>`;
     res.send(twiml);
-
 });
 
 app.post('/choose', (req, res) => {
-    const digits = req.body.Digits;
-    const choice = digits;
+    const digits = req.body.Digits; //ivr choice
+    var callSid =req.body.CallSid;
 
-    insertVoter(req.body.From, digits, "", req.body.CallSid);
-    callSid =req.body.CallSid;
+    var twiml; 
+    var confname; 
 
-    var voter = {phoneNumber: req.body.From, choice: digits, state: "new", timestamp: "now"}
-    var twiml;
+    var voter = {phoneNumber: req.body.From, choice: digits, state: "new", timestamp: "now"} //
     collection = db.collection('voters');
-    var confname; //will be returned
-    var otherVoter = collection.findOne( { $and: [{ choice: { $ne: choice } }, {state: "waiting"}]}, function (err, result) {
-
+    var otherVoter = collection.findOne( { $and: [{ choice: { $ne: digits } }, {state: "waiting"}]}, function (err, result) {
         if (err) {
             console.log(err)
         } else {
-            console.log("by some miracle syntax is correct" + result);
-            console.log(result);
-            console.dir(result);
-           // console.log(`other voter ${otherVoter}`);
-
+            //found someboudy waiting, so update the original waiting person document
             if (result) {
-                    //get conference room they are in
-
-
                     collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, otherchoice: digits}})
-
                     twiml = `<Response>
                             <Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
-
-                    // update thisvoter and thatvoter with a room each is in
              } else {
-                    //insert
+            //did not find a waiting voter
                     voter.conference = callSid;
                     voter.state = "waiting";
                     confname = callSid;
@@ -142,43 +103,11 @@ app.post('/choose', (req, res) => {
                             console.log(`logged a voter ${voter}`);
                         }
                     });
-
                     twiml = `<Response>
                             <Say voice="alice">Please hold until another caller joins.</Say>
                             <Dial action="/cleanup"><Conference endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${confname}</Conference></Dial></Response>`;
-
             }
             res.send(twiml);
-
         }
-
-
     } );
-    //insert voter with digits
-
-    //look for a queue that is not =! to your queue
-    // if none, drop this user into their own conference
-    // update user conference id
-    // if there is one:
-    // dial the other conference
-    // update agent state
-
-
-    //res.send(200);
-
 });
-
-//tr callback -
-//enqueue the caller
-//second caller enqued
-//
-//
-
-
-function insertVoter(phoneNumber, choice, state, callSid) {
-
-    console.log('fucking callbacks... when does print...');
-
-
-
-}
