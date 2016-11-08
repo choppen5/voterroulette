@@ -31,13 +31,10 @@ app.get('/ivr', function (req, res) {
   //res.set('Conent-Type', 'text/xml');
 
   var twiml = ` <Response>
-                <Say>Welcome to voter roulette! Your conversation will be recorded and potentially transcribed and published on the internet.
+                <Say>Welcome to voter roulette! You will be connected to a voter who supports another candidate. Your conversation will be recorded and potentially transcribed and published on the internet.
                 If you don't want your conversation recorded and published, please  hang up now.</Say>
                 <Pause></Pause>
                 <Gather action="/choose">
-                <Say>First rule.. Be nice.
-                The goal of this is to have a civilized conversation.  
-                </Say>
                 <Pause></Pause>
                 <Say>If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
@@ -127,7 +124,6 @@ app.post('/choose', (req, res) => {
                     collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, choice: digits}})
 
                     twiml = `<Response>
-                            <Say>You are joining a waiting voter who is voting for a different candidate or party. Say hi, let them know who you are voting for, be nice. Have fun!</Say>
                             <Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
 
                     // update thisvoter and thatvoter with a room each is in
@@ -145,7 +141,7 @@ app.post('/choose', (req, res) => {
                     });
 
                     twiml = `<Response>
-                            <Say>You will hear hold music while you wait for another person. Let them know who you are voting for when they join as they won't know.</Say>
+                            <Say>Please hold until another caller joins.</Say>
                             <Dial action="/cleanup"><Conference endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${confname}</Conference></Dial></Response>`;
 
             }
