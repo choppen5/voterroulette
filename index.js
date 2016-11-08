@@ -93,7 +93,7 @@ app.post('/cleanup', function (req, res) {
     //send sms with recording
     //ask them if they changed their mind? do they
 
-     var twiml = `<Response><Say>Thank you for your particpation. Call back in if you want more of this.</Say></Response>`;
+     var twiml = `<Response><Pause/><<Say>Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
 
     res.send(twiml);
 
@@ -127,7 +127,7 @@ app.post('/choose', (req, res) => {
                     collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, choice: digits}})
 
                     twiml = `<Response>
-                            <Say>You are joining a waiting candidate. Let them know who you are voting as they won't know that</Say>
+                            <Say>You are joining a waiting voter who is voting for a different candidate or party. Say hi, let them know who you are voting for, be nice. Have fun!</Say>
                             <Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
 
                     // update thisvoter and thatvoter with a room each is in
