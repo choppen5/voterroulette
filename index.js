@@ -32,12 +32,12 @@ app.get('/ivr', function (req, res) {
 
   var twiml = ` <Response>
                 <Say voice="alice">Welcome to voter roulette! You will be connected to a voter who supports another candidate. 
-                <Pause></Pause>
+                <Pause length="1"/>
                 Your conversation will be recorded and potentially transcribed and published on the internet.
                 If you don't want your conversation recorded, please  hang up now.</Say>
-                <Pause></Pause>
+                 <Pause length="1"/>
                 <Gather numDigits="1" action="/choose">
-                <Pause></Pause>
+                 <Pause length="1"/>
                 <Say voice="alice">If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
                 If you are undecided, press 3.
