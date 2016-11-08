@@ -31,13 +31,12 @@ app.get('/ivr', function (req, res) {
   //res.set('Conent-Type', 'text/xml');
 
   var twiml = ` <Response>
-                <Say>Welcome to voter roulette! Your conversation will be recorded and transcribed and published on the internet.
+                <Say>Welcome to voter roulette! Your conversation will be recorded and potentially transcribed and published on the internet.
                 If you don't want your conversation recorded, please  hang up now.</Say>
                 <Gather action="/choose">
                 <Say>You are calling in to talk to a voter who is voting for somebody else.
-                The goal of this is to have a civilized conversation, share about why you are
-                voiting for who you are voting for. Your conversation will be recorded and transcripibed and put on the internet.
-                If you don't want your conversation recorded, please  hang up now.
+                The goal of this is to have a civilized conversation.  Please start by sharing about why you are
+                voting, and who you are voting for. 
                 </Say>
                 <Say>If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
