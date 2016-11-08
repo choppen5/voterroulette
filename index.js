@@ -34,7 +34,7 @@ app.get('/ivr', function (req, res) {
                 <Say voice="alice">Welcome to voter roulette! You will be connected to a voter who supports another candidate. 
                 <Pause></Pause>
                 Your conversation will be recorded and potentially transcribed and published on the internet.
-                If you don't want your conversation recorded and published, please  hang up now.</Say>
+                If you don't want your conversation recorded, please  hang up now.</Say>
                 <Pause></Pause>
                 <Gather numDigits="1" action="/choose">
                 <Pause></Pause>
@@ -93,7 +93,7 @@ app.post('/cleanup', function (req, res) {
     //send sms with recording
     //ask them if they changed their mind? do they
 
-     var twiml = `<Response><Say voice="alice">Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
+     var twiml = `<Response><Say voice="alice">Thank you for your call. Call back in if you want to talk to another voter.</Say></Response>`;
 
     res.send(twiml);
 
