@@ -36,7 +36,7 @@ app.get('/ivr', function (req, res) {
                 Your conversation will be recorded and potentially transcribed and published on the internet.
                 If you don't want your conversation recorded and published, please  hang up now.</Say>
                 <Pause></Pause>
-                <Gather action="/choose">
+                <Gather numdDigits="1" action="/choose">
                 <Pause></Pause>
                 <Say voice="alice">If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
@@ -44,6 +44,7 @@ app.get('/ivr', function (req, res) {
                 For votes for any other candiate, press 4
                 </Say>
                 </Gather>
+                <Redirect>/ivr</Redirect>
                 </Response>`
 
  res.send(twiml);
