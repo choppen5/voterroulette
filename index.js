@@ -124,7 +124,7 @@ app.post('/choose', (req, res) => {
                     //get conference room they are in
 
 
-                    collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, choice: digits}})
+                    collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, otherchoice: digits}})
 
                     twiml = `<Response>
                             <Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
