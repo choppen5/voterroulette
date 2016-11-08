@@ -93,7 +93,7 @@ app.post('/cleanup', function (req, res) {
     //send sms with recording
     //ask them if they changed their mind? do they
 
-     var twiml = `<Response></Pause><Say>Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
+     var twiml = `<Response><Say>Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
 
     res.send(twiml);
 
