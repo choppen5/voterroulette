@@ -33,10 +33,10 @@ app.get('/ivr', function (req, res) {
   var twiml = ` <Response>
                 <Say>Welcome to voter roulette! Your conversation will be recorded and potentially transcribed and published on the internet.
                 If you don't want your conversation recorded and published, please  hang up now.</Say>
+                <Pause></Pause>
                 <Gather action="/choose">
-                <Say>You will be talking to a voter who is voting for somebody else.  Be nice!!
-                The goal of this is to have a civilized conversation.  Please start by sharing about why you are
-                voting, and who you are voting for. 
+                <Say>First rule.. Be nice.
+                The goal of this is to have a civilized conversation.  
                 </Say>
                 <Pause></Pause>
                 <Say>If you are voting for Hillary Clinton, press 1.
