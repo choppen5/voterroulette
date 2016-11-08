@@ -55,7 +55,7 @@ app.get('/ivr', function (req, res) {
 app.post('/recordingover', function (req, res) {
     collection = db.collection('voters');
     console.dir(req.body);
-    collection.findOne( { conference: req.body.CallSid }, function (err, result) {
+    collection.findOne( { $or: [{conference: req.body.CallSid}, {othercaller: req.body.CallSid }]}, function (err, result) {
 
         if (err) {
             console.log(err)
