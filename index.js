@@ -93,7 +93,7 @@ app.post('/cleanup', function (req, res) {
     //send sms with recording
     //ask them if they changed their mind? do they
 
-     var twiml = `<Response><Pause/><<Say>Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
+     var twiml = `<Response></Pause><Say>Thank you for your particpation. Call back in if you want to talk to another voter.</Say></Response>`;
 
     res.send(twiml);
 
@@ -145,7 +145,7 @@ app.post('/choose', (req, res) => {
                     });
 
                     twiml = `<Response>
-                            <Say>You will hear hold music while you wait for a voter from another candidate. Let them know who you are voting for when they join as they won't know.</Say>
+                            <Say>You will hear hold music while you wait for another person. Let them know who you are voting for when they join as they won't know.</Say>
                             <Dial action="/cleanup"><Conference endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${confname}</Conference></Dial></Response>`;
 
             }
