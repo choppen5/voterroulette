@@ -32,12 +32,13 @@ app.get('/ivr', function (req, res) {
 
   var twiml = ` <Response>
                 <Say>Welcome to voter roulette! Your conversation will be recorded and potentially transcribed and published on the internet.
-                If you don't want your conversation recorded, please  hang up now.</Say>
+                If you don't want your conversation recorded and published, please  hang up now.</Say>
                 <Gather action="/choose">
-                <Say>You are calling in to talk to a voter who is voting for somebody else.
+                <Say>You will be talking to a voter who is voting for somebody else.  Be nice!!
                 The goal of this is to have a civilized conversation.  Please start by sharing about why you are
                 voting, and who you are voting for. 
                 </Say>
+                <Pause></Pause>
                 <Say>If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
                 If you are undecided, press 3.
@@ -71,9 +72,29 @@ app.post('/recordingover', function (req, res) {
 });
 
 app.post('/cleanup', function (req, res) {
-    var twiml = `<Response><Say>Thank you for your particpation. Call back in if you want more of this.</Say></Response>`;
-    //send sms with recordin
+    
+    collection = db.collection('voters');
+    console.dir(req.body);
+    collection.findOne( { conference: req.body.CallSid }, function (err, result) {
+
+        if (err) {
+            console.log(err)
+        } else {
+            if (result) {
+                //console.log("found " + req.body.FriendlyName);
+
+                collection.update({_id: result._id}, {$set: {state: "complete", recordingUrl: req.body.RecordingUrl}});
+            }
+
+        }
+    });
+
+    //todo: 
+    //send sms with recording
     //ask them if they changed their mind? do they
+
+     var twiml = `<Response><Say>Thank you for your particpation. Call back in if you want more of this.</Say></Response>`;
+
     res.send(twiml);
 
 });
