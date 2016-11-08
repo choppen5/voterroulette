@@ -41,10 +41,10 @@ app.get('/ivr', function (req, res) {
                 <Say voice="alice">If you are voting for Hillary Clinton, press 1.
                 If you are voting for Donald Trump, press 2.
                 If you are undecided, press 3.
-                For votes for any other candiate, press 4
+                For votes for any other canididate, press 4
                 </Say>
                 </Gather>
-                <Redirect>/ivr</Redirect>
+                <Redirect method="GET">/ivr</Redirect>
                 </Response>`
 
  res.send(twiml);
