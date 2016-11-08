@@ -124,9 +124,11 @@ app.post('/choose', (req, res) => {
                     //get conference room they are in
 
 
-                    collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid}})
+                    collection.update({_id: result._id}, {$set: {state: "talking", othercaller: callSid, choice: digits}})
 
-                    twiml = `<Response><Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
+                    twiml = `<Response>
+                            <Say>You are joining a waiting candidate. Let them know who you are voting as they won't know that</Say>
+                            <Dial action="/cleanup"><Conference  endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${result.conference}</Conference></Dial></Response>`;
 
                     // update thisvoter and thatvoter with a room each is in
              } else {
@@ -142,7 +144,9 @@ app.post('/choose', (req, res) => {
                         }
                     });
 
-                    twiml = `<Response><Dial action="/cleanup"><Conference endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${confname}</Conference></Dial></Response>`;
+                    twiml = `<Response>
+                            <Say>You will hear hold music while you wait for a voter from another candidate. Let them know who you are voting for when they join as they won't know.</Say>
+                            <Dial action="/cleanup"><Conference endConferenceOnExit="true" record="record-from-start" eventCallbackUrl="/recordingover">${confname}</Conference></Dial></Response>`;
 
             }
             res.send(twiml);
