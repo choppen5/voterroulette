@@ -83,7 +83,7 @@ app.post('/cleanup', function (req, res) {
             if (result) {
                 //console.log("found " + req.body.FriendlyName);
 
-                collection.update({_id: result._id}, {$set: {state: "complete", recordingUrl: req.body.RecordingUrl}});
+                collection.update({_id: result._id}, {$set: {state: "complete"}});
             }
 
         }
